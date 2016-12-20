@@ -1,0 +1,8 @@
+CREATE DATABASE d;
+CREATE DATABASE d;
+Error 1007: Can't create database 'd'; database exists
+CREATE DATABASE IF NOT EXISTS d;
+DROP DATABASE d;
+DROP DATABASE d;
+Error 1008: Can't drop database 'd'; database doesn't exist
+DROP DATABASE IF EXISTS d;

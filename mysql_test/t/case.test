@@ -1,0 +1,30 @@
+# For Case When clause
+
+SELECT CASE 1 WHEN 1 THEN 'one' WHEN 2 THEN 'two' ELSE 'more' END;
+SELECT CASE WHEN 1>0 THEN 'true' ELSE 'false' END;
+
+select CASE "b" when "a" then 1 when "b" then 2 END;
+select CASE "c" when "a" then 1 when "b" then 2 END;
+select CASE "c" when "a" then 1 when "b" then 2 ELSE 3 END;
+select CASE concat("a","b") when concat("ab","") then "a" when "b" then "b" end;
+select CASE when 1=0 then "true" else "false" END;
+select CASE 1 when 1 then "one" WHEN 2 then "two" ELSE "more" END;
+select CASE 2.0 when 1 then "one" WHEN 2.0 then "two" ELSE "more" END;
+select case when 1>0 then "TRUE" else "FALSE" END;
+select case when 1<0 then "TRUE" else "FALSE" END;
+
+drop table if exists t1;
+create table t1(a float, b int default 3);
+insert into t1 (a) values (2), (11), (8);
+select min(a), min(case when 1=1 then a else NULL end), min(case when 1!=1 then NULL else a end) from t1 where b=3 group by b;
+drop table t1;
+
+drop table if exists t1;
+create table t1(c1 int, c2 int);
+insert into t1 (c1) values (11), (12);
+insert into t1 (c2) values (23), (24);
+select case when c1 is null then "true" end as a from t1;
+drop table t1;
+
+# NULL==NULL return NULL not true/false
+SELECT CASE null WHEN 1 THEN 'one' WHEN null THEN 'two' ELSE 'more' END;

@@ -1,0 +1,216 @@
+show databases;
+Database
+INFORMATION_SCHEMA
+PERFORMANCE_SCHEMA
+mysql
+test
+show DATABASES;
+Database
+INFORMATION_SCHEMA
+PERFORMANCE_SCHEMA
+mysql
+test
+drop database if exists test;
+create database test;
+use test;
+DROP TABLE  IF EXISTS  t;
+CREATE TABLE t (
+c1 int,
+c2 int,
+c3 int,
+c4 int,
+primary key(c1));
+CREATE INDEX c2_index ON t (c2);
+CREATE UNIQUE INDEX c3_index ON t (c3);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+c1	int(11)	NO	PRI	NULL	
+c2	int(11)	YES	MUL	NULL	
+c3	int(11)	YES	UNI	NULL	
+c4	int(11)	YES		NULL	
+DROP TABLE  IF EXISTS  t1;
+CREATE TABLE t1 (
+c1 bigint NOT NULL AUTO_INCREMENT,
+c2 bigint, c3 bigint,
+c4 bigint NOT NULL DEFAULT 10,
+PRIMARY KEY (c1),
+UNIQUE INDEX c2_index (c2),
+INDEX c3_index (c3));
+show tables;
+Tables_in_test
+t
+t1
+show TABLES;
+Tables_in_test
+t
+t1
+show columns from t1;
+Field	Type	Null	Key	Default	Extra
+c1	bigint(21)	NO	PRI	NULL	auto_increment
+c2	bigint(21)	YES	UNI	NULL	
+c3	bigint(21)	YES	MUL	NULL	
+c4	bigint(21)	NO		10	
+create database d2;
+use d2;
+show databases;
+Database
+INFORMATION_SCHEMA
+PERFORMANCE_SCHEMA
+d2
+mysql
+test
+show tables from test;
+Tables_in_test
+t
+t1
+show columns from t1 from test;
+Field	Type	Null	Key	Default	Extra
+c1	bigint(21)	NO	PRI	NULL	auto_increment
+c2	bigint(21)	YES	UNI	NULL	
+c3	bigint(21)	YES	MUL	NULL	
+c4	bigint(21)	NO		10	
+show warnings;
+Level	Code	Message
+use test;
+DROP TABLE  IF EXISTS  t2;
+CREATE TABLE t2 (
+c1 bigint NOT NULL AUTO_INCREMENT,
+c2 bigint,
+c3 bigint,
+c4 bigint NOT NULL DEFAULT 10,
+c5 bigint,
+c6 bigint,
+PRIMARY KEY (c1),
+UNIQUE KEY c2_index (c2),
+KEY c3_index (c3),
+UNIQUE c4_index (c4),
+UNIQUE c5_c6_index (c5, c6));
+show columns from t2;
+Field	Type	Null	Key	Default	Extra
+c1	bigint(21)	NO	PRI	NULL	auto_increment
+c2	bigint(21)	YES	UNI	NULL	
+c3	bigint(21)	YES	MUL	NULL	
+c4	bigint(21)	NO	UNI	10	
+c5	bigint(21)	YES	MUL	NULL	
+c6	bigint(21)	YES		NULL	
+drop table if exists t;
+create table t (id int, c1 timestamp);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	timestamp	NO		CURRENT_TIMESTAMP	on update CURRENT_TIMESTAMP
+drop table if exists t;
+create table t (id int, c1 timestamp default 20150608);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	timestamp	NO		2015-06-08 00:00:00	
+drop table if exists t;
+create table t (id int, c1 timestamp default current_timestamp);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	timestamp	NO		CURRENT_TIMESTAMP	
+drop table if exists t;
+create table t (id int, c1 timestamp null);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	timestamp	YES		NULL	
+drop table if exists t;
+create table t (id int, c1 timestamp null default null);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	timestamp	YES		NULL	
+drop table if exists t;
+create table t (id int, c1 timestamp null default 0);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	timestamp	YES		0000-00-00 00:00:00	
+drop table if exists t;
+create table t (id int, c1 timestamp not null default 0);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	timestamp	NO		0000-00-00 00:00:00	
+drop table if exists t;
+create table t (id int, c1 timestamp on update current_timestamp);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	timestamp	NO		0000-00-00 00:00:00	on update CURRENT_TIMESTAMP
+drop table if exists t;
+create table t (id int, c1 timestamp default current_timestamp on update current_timestamp);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	timestamp	NO		CURRENT_TIMESTAMP	on update CURRENT_TIMESTAMP
+drop table if exists t;
+create table t (id int, c1 datetime);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	datetime	YES		NULL	
+drop table if exists t;
+create table t (id int, c1 datetime default 20150608);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	datetime	YES		2015-06-08 00:00:00	
+drop table if exists t;
+create table t (id int, c1 datetime default current_timestamp);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	datetime	YES		CURRENT_TIMESTAMP	
+drop table if exists t;
+create table t (id int, c1 datetime null);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	datetime	YES		NULL	
+drop table if exists t;
+create table t (id int, c1 datetime null default null);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	datetime	YES		NULL	
+drop table if exists t;
+create table t (id int, c1 datetime null default 0);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	datetime	YES		0000-00-00 00:00:00	
+drop table if exists t;
+create table t (id int, c1 datetime not null default 0);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	datetime	NO		0000-00-00 00:00:00	
+drop table if exists t;
+create table t (id int, c1 datetime on update current_timestamp);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	datetime	YES		NULL	on update CURRENT_TIMESTAMP
+drop table if exists t;
+create table t (id int, c1 datetime default current_timestamp on update current_timestamp);
+show columns from t;
+Field	Type	Null	Key	Default	Extra
+id	int(11)	YES		NULL	
+c1	datetime	YES		CURRENT_TIMESTAMP	on update CURRENT_TIMESTAMP
+show engines;
+Engine	Support	Comment	Transactions	XA	Savepoints
+InnoDB	DEFAULT	Supports transactions, row-level locking, and foreign keys	YES	YES	YES
+show full columns from t;
+Field	Type	Collation	Null	Key	Default	Extra	Privileges	Comment
+id	int(11)	binary	YES		NULL		select,insert,update,references	
+c1	datetime	binary	YES		CURRENT_TIMESTAMP	on update CURRENT_TIMESTAMP	select,insert,update,references	
+show character set;
+Charset	Description	Default collation	Maxlen
+utf8	UTF-8 Unicode	utf8_general_ci	3
+latin1	cp1252 West European	latin1_swedish_ci	1
+utf8mb4	UTF-8 Unicode	utf8mb4_general_ci	4
+ascii	US ASCII	ascii_general_ci	1

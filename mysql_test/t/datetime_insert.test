@@ -1,0 +1,198 @@
+drop table if exists t;
+
+create table t (id int, c1 datetime not null default CURRENT_TIMESTAMP);
+select * from t;
+
+set TIMESTAMP = 1234;
+select @@timestamp;
+
+insert t (id) values (1);
+select * from t;
+
+set TIMESTAMP = 1235;
+select @@timestamp;
+
+insert t (id, c1) values (2, '2015-08-04 00:00:00');
+select * from t;
+
+drop table if exists t;
+create table t (id int, c1 datetime);
+set TIMESTAMP = 1236;
+select @@timestamp;
+
+insert t (id) values (1);
+select * from t;
+
+insert t (id, c1) values (2, '2015-08-04 00:00:00');
+select * from t;
+
+drop table if exists t;
+create table t (id int, c1 datetime null default CURRENT_TIMESTAMP);
+set TIMESTAMP = 1237;
+select @@timestamp;
+
+insert t (id) values (1);
+select * from t;
+
+drop table if exists t;
+create table t (id int, c1 datetime default '2015-08-04 12:00:00');
+set TIMESTAMP = 1238;
+select @@timestamp;
+
+insert t (id) values (1);
+select * from t;
+
+drop table if exists t;
+--error ER_DEFAULT_VALUE
+create table t (id int, c1 datetime default '12345678');
+set TIMESTAMP = 1239;
+select @@timestamp;
+
+drop table if exists t;
+create table t (id int, c1 datetime default 20101010111111);
+set TIMESTAMP = 1240;
+select @@timestamp;
+
+insert t (id) values (1);
+select * from t;
+
+drop table if exists t;
+create table t (id int, c1 datetime default 0);
+set TIMESTAMP = 1241;
+select @@timestamp;
+
+insert t (id) values (1);
+select * from t;
+
+drop table if exists t;
+--error ER_DEFAULT_VALUE
+create table t (id int, c1 datetime default -1);
+set TIMESTAMP = 1242;
+select @@timestamp;
+
+drop table if exists t;
+--error ER_DEFAULT_VALUE
+create table t (id int, c1 datetime default 99999999999999);
+set TIMESTAMP = 1243;
+select @@timestamp;
+
+drop table if exists t;
+create table t (id int, c1 datetime default 99991231235959);
+set TIMESTAMP = 1244;
+select @@timestamp;
+
+insert t (id) values (1);
+select * from t;
+
+drop table if exists t;
+--error ER_DEFAULT_VALUE
+create table t (id int, c1 datetime default 100000000000000);
+set TIMESTAMP = 1245;
+select @@timestamp;
+
+drop table if exists t;
+create table t (id int, c1 datetime default 10000102000000);
+set TIMESTAMP = 1246;
+select @@timestamp;
+
+insert t (id) values (1);
+select * from t;
+
+drop table if exists t;
+create table t (id int, c1 datetime default null);
+set TIMESTAMP = 1247;
+select @@timestamp;
+
+insert t (id) values (1);
+select * from t;
+
+drop table if exists t;
+--error ER_DEFAULT_VALUE
+create table t (id int, c1 datetime not null default null);
+set TIMESTAMP = 1248;
+select @@timestamp;
+
+drop table if exists t;
+create table t (id int, c1 datetime null default null);
+set TIMESTAMP = 1249;
+select @@timestamp;
+
+insert t (id) values (1);
+select * from t;
+
+drop table if exists t;
+create table t (id int, c1 datetime not null);
+set TIMESTAMP = 1250;
+select @@timestamp;
+
+--error ER_DEFAULT_VALUE
+insert t (id) values (1);
+
+drop table if exists t;
+create table t (id int, c1 datetime null);
+set TIMESTAMP = 1251;
+select @@timestamp;
+
+insert t (id) values (1);
+select * from t;
+
+drop table if exists t;
+create table t (id int, c1 datetime null default 0);
+set TIMESTAMP = 1252;
+select @@timestamp;
+
+insert t (id) values (1);
+select * from t;
+
+drop table if exists t;
+create table t (id int, c1 datetime not null default 0);
+set TIMESTAMP = 1253;
+select @@timestamp;
+
+insert t (id) values (1);
+select * from t;
+
+drop table if exists t;
+create table t (id int, c1 datetime default 20150804);
+set TIMESTAMP = 1254;
+select @@timestamp;
+
+insert t values (1, null);
+select * from t;
+
+drop table if exists t;
+create table t (id int, c1 datetime);
+set TIMESTAMP = 1255;
+select @@timestamp;
+
+insert t values (1, null);
+select * from t;
+
+drop table if exists t;
+create table t (id int, c1 datetime null default null);
+set TIMESTAMP = 1256;
+select @@timestamp;
+
+insert t values (1, null);
+select * from t;
+
+drop table if exists t;
+create table t(id int, c1 datetime NOT NULL default '0000-00-00 00:00:00');
+insert t (id) values (1);
+drop table if exists t1;
+create table t1(c1 int, c2 int);
+insert t (id) values (2);
+select * from t;
+
+drop table if exists t;
+create table t(id int, c1 datetime NOT NULL default 0);
+insert t (id) values (1);
+drop table if exists t1;
+create table t1(c1 int, c2 int);
+insert t (id) values (2);
+select * from t;
+
+drop table if exists t;
+create table t (c1 datetime(2), c2 datetime(6));
+insert into t values ("2011-11-11 10:10:10.123999", "2011-11-11 10:10:10.1239999");
+select c1, c2, cast(c1 as time(6)), cast(c2 as time(6)) from t;

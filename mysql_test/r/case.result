@@ -1,0 +1,54 @@
+SELECT CASE 1 WHEN 1 THEN 'one' WHEN 2 THEN 'two' ELSE 'more' END;
+CASE 1 WHEN 1 THEN 'one' WHEN 2 THEN 'two' ELSE 'more' END
+one
+SELECT CASE WHEN 1>0 THEN 'true' ELSE 'false' END;
+CASE WHEN 1>0 THEN 'true' ELSE 'false' END
+true
+select CASE "b" when "a" then 1 when "b" then 2 END;
+CASE "b" when "a" then 1 when "b" then 2 END
+2
+select CASE "c" when "a" then 1 when "b" then 2 END;
+CASE "c" when "a" then 1 when "b" then 2 END
+NULL
+select CASE "c" when "a" then 1 when "b" then 2 ELSE 3 END;
+CASE "c" when "a" then 1 when "b" then 2 ELSE 3 END
+3
+select CASE concat("a","b") when concat("ab","") then "a" when "b" then "b" end;
+CASE concat("a","b") when concat("ab","") then "a" when "b" then "b" end
+a
+select CASE when 1=0 then "true" else "false" END;
+CASE when 1=0 then "true" else "false" END
+false
+select CASE 1 when 1 then "one" WHEN 2 then "two" ELSE "more" END;
+CASE 1 when 1 then "one" WHEN 2 then "two" ELSE "more" END
+one
+select CASE 2.0 when 1 then "one" WHEN 2.0 then "two" ELSE "more" END;
+CASE 2.0 when 1 then "one" WHEN 2.0 then "two" ELSE "more" END
+two
+select case when 1>0 then "TRUE" else "FALSE" END;
+case when 1>0 then "TRUE" else "FALSE" END
+TRUE
+select case when 1<0 then "TRUE" else "FALSE" END;
+case when 1<0 then "TRUE" else "FALSE" END
+FALSE
+drop table if exists t1;
+create table t1(a float, b int default 3);
+insert into t1 (a) values (2), (11), (8);
+select min(a), min(case when 1=1 then a else NULL end), min(case when 1!=1 then NULL else a end) from t1 where b=3 group by b;
+min(a)	min(case when 1=1 then a else NULL end)	min(case when 1!=1 then NULL else a end)
+2	2	2
+drop table t1;
+drop table if exists t1;
+create table t1(c1 int, c2 int);
+insert into t1 (c1) values (11), (12);
+insert into t1 (c2) values (23), (24);
+select case when c1 is null then "true" end as a from t1;
+a
+NULL
+NULL
+true
+true
+drop table t1;
+SELECT CASE null WHEN 1 THEN 'one' WHEN null THEN 'two' ELSE 'more' END;
+CASE null WHEN 1 THEN 'one' WHEN null THEN 'two' ELSE 'more' END
+more

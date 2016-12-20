@@ -1,0 +1,251 @@
+drop table if exists t1,t2,t3;
+SET SQL_WARNINGS=1;
+CREATE TABLE t1 (
+ID CHAR(32) NOT NULL,
+name CHAR(32) NOT NULL,
+value CHAR(255),
+INDEX indexIDname (ID(8),name(8))
+) ;
+INSERT INTO t1 VALUES
+('keyword','indexdir','/export/home/local/www/database/indexes/keyword');
+INSERT INTO t1 VALUES ('keyword','urlprefix','text/ /text');
+INSERT INTO t1 VALUES ('keyword','urlmap','/text/ /');
+INSERT INTO t1 VALUES ('keyword','attr','personal employee company');
+INSERT INTO t1 VALUES
+('emailgids','indexdir','/export/home/local/www/database/indexes/emailgids');
+INSERT INTO t1 VALUES ('emailgids','urlprefix','text/ /text');
+INSERT INTO t1 VALUES ('emailgids','urlmap','/text/ /');
+INSERT INTO t1 VALUES ('emailgids','attr','personal employee company');
+SELECT value FROM t1 WHERE ID='emailgids' AND name='attr';
+value
+personal employee company
+drop table t1;
+CREATE TABLE t1 (
+price int(5) DEFAULT '0' NOT NULL,
+area varchar(40) DEFAULT '' NOT NULL,
+type varchar(40) DEFAULT '' NOT NULL,
+transityes enum('Y','N') DEFAULT 'Y' NOT NULL,
+shopsyes enum('Y','N') DEFAULT 'Y' NOT NULL,
+schoolsyes enum('Y','N') DEFAULT 'Y' NOT NULL,
+petsyes enum('Y','N') DEFAULT 'Y' NOT NULL,
+KEY price (price,area,type,transityes,shopsyes,schoolsyes,petsyes)
+);
+INSERT INTO t1 VALUES (900,'Vancouver','Shared/Roomate','N','N','N','N');
+INSERT INTO t1 VALUES (900,'Vancouver','Shared/Roomate','N','N','N','N');
+INSERT INTO t1 VALUES (900,'Vancouver','Shared/Roomate','Y','Y','Y','Y');
+INSERT INTO t1 VALUES (900,'Vancouver','Shared/Roomate','Y','Y','Y','Y');
+INSERT INTO t1 VALUES (900,'Vancouver','Shared/Roomate','Y','Y','Y','Y');
+INSERT INTO t1 VALUES (900,'Vancouver','Shared/Roomate','Y','Y','Y','Y');
+INSERT INTO t1 VALUES (900,'Vancouver','Shared/Roomate','Y','Y','Y','Y');
+SELECT * FROM t1 WHERE area='Vancouver' and transityes='y' and schoolsyes='y' and ( ((type='1 Bedroom' or type='Studio/Bach') and (price<=500)) or ((type='2 Bedroom') and (price<=550)) or ((type='Shared/Roomate') and (price<=300)) or ((type='Room and Board') and (price<=500)) ) and price <= 400;
+price	area	type	transityes	shopsyes	schoolsyes	petsyes
+drop table t1;
+CREATE TABLE t1 (program enum('signup','unique','sliding') not null,  type enum('basic','sliding','signup'),  sites set('mt'),  PRIMARY KEY (program));
+drop table t1;
+CREATE TABLE t1 (
+name varchar(50) DEFAULT '' NOT NULL,
+author varchar(50) DEFAULT '' NOT NULL,
+category decimal(10,0) DEFAULT '0' NOT NULL,
+email varchar(50),
+password varchar(50),
+proxy varchar(50),
+bitmap varchar(20),
+msg varchar(255),
+urlscol varchar(127),
+urlhttp varchar(127),
+timeout decimal(10,0),
+nbcnx decimal(10,0),
+creation decimal(10,0),
+livinguntil decimal(10,0),
+lang decimal(10,0),
+type decimal(10,0),
+subcat decimal(10,0),
+subtype decimal(10,0),
+reg char(1),
+scs varchar(255),
+capacity decimal(10,0),
+userISP varchar(50),
+CCident varchar(50) DEFAULT '' NOT NULL,
+PRIMARY KEY (name,author,category)
+);
+INSERT INTO t1 VALUES
+('patnom','patauteur',0,'p.favre@cryo-networks.fr',NULL,NULL,'#p2sndnq6ae5g1u6t','essai salut','scol://195.242.78.119:patauteur.patnom',NULL,NULL,NULL,950036174,-882087474,NULL,3,0,3,'1','Pub/patnom/futur_divers.scs',NULL,'pat','CC1');
+INSERT INTO t1 VALUES
+('LeNomDeMonSite','Marc',0,'m.barilley@cryo-networks.fr',NULL,NULL,NULL,NULL,'scol://195.242.78.119:Marc.LeNomDeMonSite',NULL,NULL,NULL,950560434,-881563214,NULL,3,0,3,'1','Pub/LeNomDeMonSite/domus_hibere.scs',NULL,'Marq','CC1');
+select * from t1 where name='patnom' and author='patauteur' and category=0;
+name	author	category	email	password	proxy	bitmap	msg	urlscol	urlhttp	timeout	nbcnx	creation	livinguntil	lang	type	subcat	subtype	reg	scs	capacity	userISP	CCident
+patnom	patauteur	0	p.favre@cryo-networks.fr	NULL	NULL	#p2sndnq6ae5g1u6t	essai salut	scol://195.242.78.119:patauteur.patnom	NULL	NULL	NULL	950036174	-882087474	NULL	3	0	3	1	Pub/patnom/futur_divers.scs	NULL	pat	CC1
+drop table t1;
+create table t1
+(
+name_id int not null auto_increment,
+name blob,
+INDEX name_idx (name(5)),
+primary key (name_id)
+);
+INSERT t1 VALUES(NULL,'/');
+INSERT t1 VALUES(NULL,'[T,U]_axpby');
+SELECT * FROM t1 WHERE name='[T,U]_axpy';
+name_id	name
+SELECT * FROM t1 WHERE name='[T,U]_axpby';
+name_id	name
+2	[T,U]_axpby
+create table t2
+(
+name_id int not null auto_increment,
+name char(255) binary,
+INDEX name_idx (name(5)),
+primary key (name_id)
+);
+INSERT t2 select * from t1;
+SELECT * FROM t2 WHERE name='[T,U]_axpy';
+name_id	name
+SELECT * FROM t2 WHERE name='[T,U]_axpby';
+name_id	name
+2	[T,U]_axpby
+drop table t1,t2;
+create table t1
+(
+SEQNO                         numeric(12 ) not null,
+MOTYPEID                 numeric(12 ) not null,
+MOINSTANCEID     numeric(12 ) not null,
+ATTRID                       numeric(12 ) not null,
+VALUE                         varchar(120) not null,
+primary key (SEQNO, MOTYPEID, MOINSTANCEID, ATTRID, VALUE )
+);
+INSERT INTO t1 VALUES (1, 1, 1, 1, 'a');
+INSERT INTO t1 VALUES (1, 1, 1, 1, 'b');
+INSERT INTO t1 VALUES (1, 1, 1, 1, 'a');
+Error 1062: Duplicate entry '1-1-1-1-a' for key 'PRIMARY'
+drop table t1;
+CREATE TABLE t1 (
+a tinytext NOT NULL,
+b tinyint(3) unsigned NOT NULL default '0',
+PRIMARY KEY (a(32),b)
+) ENGINE=MyISAM;
+INSERT INTO t1 VALUES ('a',1),('a',2);
+SELECT * FROM t1 WHERE a='a' AND b=2;
+a	b
+a	2
+SELECT * FROM t1 WHERE a='a' AND b in (2);
+a	b
+a	2
+SELECT * FROM t1 WHERE a='a' AND b in (1,2);
+a	b
+a	1
+a	2
+drop table t1;
+create table t1 (
+c1 int,
+c2 varchar(20) not null,
+primary key (c1),
+key (c2(10))
+) engine=myisam;
+insert into t1 values (1,'');
+insert into t1 values (2,' \t\tTest String');
+insert into t1 values (3,' \n\tTest String');
+update t1 set c2 = 'New Test String' where c1 = 1;
+select * from t1;
+c1	c2
+1	New Test String
+2	 		Test String
+3	 
+	Test String
+drop table t1;
+create table t1 (a int not null primary key, b varchar(20) not null unique);
+desc t1;
+Field	Type	Null	Key	Default	Extra
+a	int(11)	NO	PRI	NULL	
+b	varchar(20)	NO	UNI	NULL	
+drop table t1;
+create table t1 (a int not null primary key, b int not null unique);
+desc t1;
+Field	Type	Null	Key	Default	Extra
+a	int(11)	NO	PRI	NULL	
+b	int(11)	NO	UNI	NULL	
+drop table t1;
+create table t1 (a int not null primary key, b varchar(20) not null, unique (b(10)));
+desc t1;
+Field	Type	Null	Key	Default	Extra
+a	int(11)	NO	PRI	NULL	
+b	varchar(20)	NO	UNI	NULL	
+drop table t1;
+create table t1 (a int not null primary key, b varchar(20) not null, c varchar(20) not null, unique(b(10),c(10)));
+desc t1;
+Field	Type	Null	Key	Default	Extra
+a	int(11)	NO	PRI	NULL	
+b	varchar(20)	NO	MUL	NULL	
+c	varchar(20)	NO		NULL	
+drop table t1;
+create table t1 (
+c1 int,
+c2 char(12),
+c3 varchar(123),
+c4 timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+index (c1),
+index i1 (c1),
+index i2 (c2),
+index i3 (c3),
+unique i4 (c4),
+index i5 (c1, c2, c3, c4),
+primary key (c2, c3),
+index (c2, c4));
+alter table t1 drop index c1;
+alter table t1 add index (c1);
+alter table t1 drop index i3;
+alter table t1 add index i3 (c3);
+drop table t1;
+CREATE TABLE t1( a TINYINT, KEY(a) ) ENGINE=MyISAM;
+INSERT INTO t1 VALUES( 1 );
+ALTER TABLE t1 DISABLE KEYS;
+drop table t1;
+CREATE TABLE t1 (
+a INTEGER auto_increment PRIMARY KEY,
+b INTEGER NOT NULL,
+c INTEGER NOT NULL,
+d CHAR(64)
+);
+CREATE TABLE t2 (
+a INTEGER auto_increment PRIMARY KEY,
+b INTEGER NOT NULL,
+c SMALLINT NOT NULL,
+d DATETIME NOT NULL,
+e SMALLINT NOT NULL,
+f INTEGER NOT NULL,
+g INTEGER NOT NULL,
+h SMALLINT NOT NULL,
+i INTEGER NOT NULL,
+j INTEGER NOT NULL,
+UNIQUE INDEX (b),
+INDEX (b, d, e, f, g, h, i, j, c),
+INDEX (c)
+);
+INSERT INTO t2 VALUES
+(NULL, 1, 254, '1000-01-01 00:00:00', 257, 0, 0, 0, 0, 0),
+(NULL, 2, 1, '2004-11-30 12:00:00', 1, 0, 0, 0, 0, 0),
+(NULL, 3, 1, '2004-11-30 12:00:00', 1, 0, 0, 2, -21600, 0),
+(NULL, 4, 1, '2004-11-30 12:00:00', 1, 0, 0, 2, -10800, 0),
+(NULL, 5, 1, '2004-11-30 12:00:00', 1, 0, 0, 5, -10800, 0),
+(NULL, 6, 1, '2004-11-30 12:00:00', 102, 0, 0, 0, 0, 0),
+(NULL, 7, 1, '2004-11-30 12:00:00', 105, 2, 0, 0, 0, 0),
+(NULL, 8, 1, '2004-11-30 12:00:00', 105, 10, 0, 0, 0, 0);
+INSERT INTO t1 (b, c, d) VALUES
+(3388000, -553000, NULL),
+(3388000, -553000, NULL);
+DROP TABLE t1, t2;
+create table t1(a int not null, key aa(a),
+b char(10) not null, unique key bb(b(1)),
+c char(4) not null);
+alter table t1 add unique key cc(c);
+show create table t1;
+Table	Create Table
+t1	CREATE TABLE `t1` (
+  `a` int(11) NOT NULL,
+  `b` char(10) NOT NULL,
+  `c` char(4) NOT NULL,
+  KEY `aa` (`a`),
+  UNIQUE KEY `bb` (`b`),
+  UNIQUE KEY `cc` (`c`)
+) ENGINE=InnoDB
+drop table t1;
+End of 5.0 tests

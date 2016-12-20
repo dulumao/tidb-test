@@ -1,0 +1,44 @@
+SELECT 1 UNION (SELECT 0) order by `1` desc;
+1
+1
+0
+SELECT 1 UNION SELECT 0, 1;
+Error 1105: The used SELECT statements have a different number of columns
+SELECT 1 UNION (SELECT "2") order by `1`;
+1
+1
+2
+SELECT 1 UNION SELECT 1;
+1
+1
+SELECT 1 UNION ALL SELECT 1;
+1
+1
+1
+SELECT REPEAT('a',1) UNION (SELECT REPEAT('b',10)) order by `REPEAT('a',1)`;
+REPEAT('a',1)
+a
+bbbbbbbbbb
+DROP TABLE IF EXISTS t;
+CREATE TABLE t (c1 int, c2 int, c3 int);
+INSERT INTO t VALUES (1,2,3);
+INSERT INTO t VALUES (1,2,3);
+INSERT INTO t VALUES (1,2,3);
+select c1 as a from t union all select c2 from t union all (select c3 from t) order by a;
+a
+1
+1
+1
+2
+2
+2
+3
+3
+3
+DROP TABLE IF EXISTS t;
+CREATE TABLE t (c1 int, c2 int);
+INSERT INTO t VALUES (null, null);
+select c1 from t union all select c2 from t;
+c1
+NULL
+NULL

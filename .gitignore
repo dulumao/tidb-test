@@ -1,0 +1,10 @@
+*nohup.out
+*test_tidb-server
+/fuzz_test/var
+/gorm_test/gorm/data/
+/mysql_test/mysql_test
+/sqllogic_test/sqllogic_test
+/tidb_test/tidb_test
+/stability_test/stability_test
+/vendor
+/bridge/tidb-bridge

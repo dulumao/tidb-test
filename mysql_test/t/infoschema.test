@@ -1,0 +1,18 @@
+CREATE DATABASE IF NOT EXISTS d;
+USE d;
+DROP TABLE IF EXISTS t;
+CREATE TABLE t (c1 int, c2 bigint, c3 varchar(50), c4 text, primary key(c1));
+CREATE INDEX idx_c2_c3 ON t (c2, c3);
+DROP TABLE IF EXISTS t1;
+CREATE TABLE t1 (c1 int, c2 bigint, c3 decimal, c4 double, primary key(c1, c2));
+CREATE INDEX idx_c3_c4 ON t1 (c3, c4);
+CREATE TABLE t2 (c1 timestamp default CURRENT_TIMESTAMP, c2 timestamp null default 0, c3 timestamp null, c4 timestamp not null);
+CREATE INDEX idx_c1_c2 ON t2 (c1, c2);
+CREATE INDEX idx_c3_c4 ON t2 (c3, c4);
+SELECT * from INFORMATION_SCHEMA.TABLES WHERE table_schema = 'd' order by table_name;
+SELECT * from INFORMATION_SCHEMA.columns WHERE table_schema = 'd' order by table_name, column_name;
+SELECT * from INFORMATION_SCHEMA.statistics WHERE TABLE_SCHEMA = 'd' order by table_name, index_name, column_name;
+SELECT * from INFORMATION_SCHEMA.CHARACTER_SETS;
+SELECT * from INFORMATION_SCHEMA.SCHEMATA;
+DROP DATABASE d;
+USE test;

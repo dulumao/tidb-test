@@ -1,0 +1,59 @@
+CREATE DATABASE IF NOT EXISTS d;
+USE d;
+DROP TABLE IF EXISTS t;
+CREATE TABLE t (c1 int, c2 bigint, c3 varchar(50), c4 text, primary key(c1));
+CREATE INDEX idx_c2_c3 ON t (c2, c3);
+DROP TABLE IF EXISTS t1;
+CREATE TABLE t1 (c1 int, c2 bigint, c3 decimal, c4 double, primary key(c1, c2));
+CREATE INDEX idx_c3_c4 ON t1 (c3, c4);
+CREATE TABLE t2 (c1 timestamp default CURRENT_TIMESTAMP, c2 timestamp null default 0, c3 timestamp null, c4 timestamp not null);
+CREATE INDEX idx_c1_c2 ON t2 (c1, c2);
+CREATE INDEX idx_c3_c4 ON t2 (c3, c4);
+SELECT * from INFORMATION_SCHEMA.TABLES WHERE table_schema = 'd' order by table_name;
+TABLE_CATALOG	TABLE_SCHEMA	TABLE_NAME	TABLE_TYPE	ENGINE	VERSION	ROW_FORMAT	TABLE_ROWS	AVG_ROW_LENGTH	DATA_LENGTH	MAX_DATA_LENGTH	INDEX_LENGTH	DATA_FREE	AUTO_INCREMENT	CREATE_TIME	UPDATE_TIME	CHECK_TIME	TABLE_COLLATION	CHECK_SUM	CREATE_OPTIONS	TABLE_COMMENT
+def	d	t	BASE_TABLE	InnoDB	10	Compact	0	0	16384	0	0	0	NULL	NULL	NULL	NULL	latin1_swedish_ci	NULL		
+def	d	t1	BASE_TABLE	InnoDB	10	Compact	0	0	16384	0	0	0	NULL	NULL	NULL	NULL	latin1_swedish_ci	NULL		
+def	d	t2	BASE_TABLE	InnoDB	10	Compact	0	0	16384	0	0	0	NULL	NULL	NULL	NULL	latin1_swedish_ci	NULL		
+SELECT * from INFORMATION_SCHEMA.columns WHERE table_schema = 'd' order by table_name, column_name;
+TABLE_CATALOG	TABLE_SCHEMA	TABLE_NAME	COLUMN_NAME	ORDINAL_POSITION	COLUMN_DEFAULT	IS_NULLABLE	DATA_TYPE	CHARACTER_MAXIMUM_LENGTH	CHARACTER_OCTET_LENGTH	NUMERIC_PRECISION	NUMERIC_SCALE	DATETIME_PRECISION	CHARACTER_SET_NAME	COLLATION_NAME	COLUMN_TYPE	COLUMN_KEY	EXTRA	PRIVILEGES	COLUMN_COMMENT
+def	d	t	c1	1	NULL	NO	int	11	11	0	0	0	binary	binary	int(11)	PRI		select,insert,update,references	
+def	d	t	c2	2	NULL	YES	bigint	21	21	0	0	0	binary	binary	bigint(21)	MUL		select,insert,update,references	
+def	d	t	c3	3	NULL	YES	varchar	50	50	0	0	0	utf8	utf8_unicode_ci	varchar(50)			select,insert,update,references	
+def	d	t	c4	4	NULL	YES	text	-1	-1	0	0	0	utf8	utf8_unicode_ci	text			select,insert,update,references	
+def	d	t1	c1	1	NULL	NO	int	11	11	0	0	0	binary	binary	int(11)	PRI		select,insert,update,references	
+def	d	t1	c2	2	NULL	NO	bigint	21	21	0	0	0	binary	binary	bigint(21)	PRI		select,insert,update,references	
+def	d	t1	c3	3	NULL	YES	decimal	10	10	0	0	0	binary	binary	decimal(10,0)	MUL		select,insert,update,references	
+def	d	t1	c4	4	NULL	YES	double	-1	-1	0	0	0	binary	binary	double			select,insert,update,references	
+def	d	t2	c1	1	CURRENT_TIMESTAMP	NO	timestamp	-1	-1	0	0	0	binary	binary	timestamp	MUL		select,insert,update,references	
+def	d	t2	c2	2	0000-00-00 00:00:00	YES	timestamp	-1	-1	0	0	0	binary	binary	timestamp			select,insert,update,references	
+def	d	t2	c3	3	NULL	YES	timestamp	-1	-1	0	0	0	binary	binary	timestamp	MUL		select,insert,update,references	
+def	d	t2	c4	4	CURRENT_TIMESTAMP	NO	timestamp	-1	-1	0	0	0	binary	binary	timestamp		on update CURRENT_TIMESTAMP	select,insert,update,references	
+SELECT * from INFORMATION_SCHEMA.statistics WHERE TABLE_SCHEMA = 'd' order by table_name, index_name, column_name;
+TABLE_CATALOG	TABLE_SCHEMA	TABLE_NAME	NON_UNIQUE	INDEX_SCHEMA	INDEX_NAME	SEQ_IN_INDEX	COLUMN_NAME	COLLATION	CARDINALITY	SUB_PART	PACKED	NULLABLE	INDEX_TYPE	COMMENT	INDEX_COMMENT
+def	d	t	0	d	PRIMARY	1	c1	A	0	NULL	NULL		BTREE		
+def	d	t	1	d	idx_c2_c3	1	c2	A	0	NULL	NULL	YES	BTREE		
+def	d	t	1	d	idx_c2_c3	2	c3	A	0	NULL	NULL	YES	BTREE		
+def	d	t1	0	d	PRIMARY	1	c1	A	0	NULL	NULL		BTREE		
+def	d	t1	0	d	PRIMARY	2	c2	A	0	NULL	NULL		BTREE		
+def	d	t1	1	d	idx_c3_c4	1	c3	A	0	NULL	NULL	YES	BTREE		
+def	d	t1	1	d	idx_c3_c4	2	c4	A	0	NULL	NULL	YES	BTREE		
+def	d	t2	1	d	idx_c1_c2	1	c1	A	0	NULL	NULL		BTREE		
+def	d	t2	1	d	idx_c1_c2	2	c2	A	0	NULL	NULL	YES	BTREE		
+def	d	t2	1	d	idx_c3_c4	1	c3	A	0	NULL	NULL	YES	BTREE		
+def	d	t2	1	d	idx_c3_c4	2	c4	A	0	NULL	NULL		BTREE		
+SELECT * from INFORMATION_SCHEMA.CHARACTER_SETS;
+CHARACTER_SET_NAME	DEFAULT_COLLATE_NAME	DESCRIPTION	MAXLEN
+ascii	ascii_general_ci	US ASCII	1
+binary	binary	Binary pseudo charset	1
+latin1	latin1_swedish_ci	cp1252 West European	1
+utf8	utf8_general_ci	UTF-8 Unicode	3
+utf8mb4	utf8mb4_general_ci	UTF-8 Unicode	4
+SELECT * from INFORMATION_SCHEMA.SCHEMATA;
+CATALOG_NAME	SCHEMA_NAME	DEFAULT_CHARACTER_SET_NAME	DEFAULT_COLLATION_NAME	SQL_PATH
+def	d	utf8	utf8_general_ci	NULL
+def	INFORMATION_SCHEMA	utf8	utf8_general_ci	NULL
+def	mysql	utf8	utf8_general_ci	NULL
+def	PERFORMANCE_SCHEMA	utf8	utf8_general_ci	NULL
+def	test	utf8	utf8_general_ci	NULL
+DROP DATABASE d;
+USE test;

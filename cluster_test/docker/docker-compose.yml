@@ -1,0 +1,185 @@
+version: '2'
+
+services:
+  pd1:
+    image: pingcap/pd
+    ports:
+      - "2379"
+      - "2380"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+    command:
+      - --name=pd1 
+      - --client-urls=http://0.0.0.0:2379
+      - --peer-urls=http://0.0.0.0:2380
+      - --advertise-client-urls=http://pd1:2379
+      - --advertise-peer-urls=http://pd1:2380
+      - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380
+
+    privileged: true
+
+  pd2:
+    image: pingcap/pd
+    ports:
+      - "2379"
+      - "2380"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+    command:
+      - --name=pd2 
+      - --client-urls=http://0.0.0.0:2379
+      - --peer-urls=http://0.0.0.0:2380
+      - --advertise-client-urls=http://pd2:2379
+      - --advertise-peer-urls=http://pd2:2380
+      - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380
+
+    privileged: true
+
+  pd3:
+    image: pingcap/pd
+    ports:
+      - "2379"
+      - "2380"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+    command:
+      - --name=pd3 
+      - --client-urls=http://0.0.0.0:2379
+      - --peer-urls=http://0.0.0.0:2380
+      - --advertise-client-urls=http://pd3:2379
+      - --advertise-peer-urls=http://pd3:2380
+      - --initial-cluster=pd1=http://pd1:2380,pd2=http://pd2:2380,pd3=http://pd3:2380 
+
+    privileged: true
+
+  tikv1:
+    image: pingcap/tikv
+    ports:
+      - "20160"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+    command:
+      - --addr=0.0.0.0:20160
+      - --advertise-addr=tikv1:20160
+      - --store=/var/tikv
+      - --pd=pd1:2379,pd2:2379,pd3:2379
+
+    depends_on:
+      - "pd1"
+      - "pd2"
+      - "pd3"
+
+    privileged: true
+
+  tikv2:
+    image: pingcap/tikv
+    ports:
+      - "20160"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+    command:
+      - --addr=0.0.0.0:20160
+      - --advertise-addr=tikv2:20160
+      - --store=/var/tikv
+      - --pd=pd1:2379,pd2:2379,pd3:2379
+
+    depends_on:
+      - "pd1"
+      - "pd2"
+      - "pd3"
+
+    privileged: true
+
+  tikv3:
+    image: pingcap/tikv
+    ports:
+      - "20160"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+    command:
+      - --addr=0.0.0.0:20160
+      - --advertise-addr=tikv3:20160
+      - --store=/var/tikv
+      - --pd=pd1:2379,pd2:2379,pd3:2379
+
+    depends_on:
+      - "pd1"
+      - "pd2"
+      - "pd3"
+
+    privileged: true
+
+  tidb1:
+    image: pingcap/tidb
+    ports:
+      - "4000"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+    command:
+      - --store=tikv 
+      - --path=pd1:2379,pd2:2379,pd3:2379
+      - -L=warn
+
+    depends_on:
+      - "tikv1"
+      - "tikv2"
+      - "tikv3"
+
+    privileged: true
+
+  tidb2:
+    image: pingcap/tidb
+    ports:
+      - "4000"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+    command:
+      - --store=tikv 
+      - --path=pd1:2379,pd2:2379,pd3:2379
+      - -L=warn
+
+    depends_on:
+      - "tikv1"
+      - "tikv2"
+      - "tikv3"
+
+    privileged: true
+
+  tidb3:
+    image: pingcap/tidb
+    ports:
+      - "4000"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+    command:
+      - --store=tikv 
+      - --path=pd1:2379,pd2:2379,pd3:2379
+      - -L=warn
+
+    depends_on:
+      - "tikv1"
+      - "tikv2"
+      - "tikv3"
+
+    privileged: true
+
+  haproxy:
+    image: pingcap/haproxy
+    ports:
+      - "4000"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+
+    depends_on:
+      - "tidb1"
+      - "tidb2"
+      - "tidb3"

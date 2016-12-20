@@ -1,0 +1,31 @@
+CREATE DATABASE IF NOT EXISTS d;
+CREATE DATABASE IF NOT EXISTS e;
+USE d;
+CREATE TABLE t (a int);
+INSERT t VALUES (1);
+USE e;
+CREATE TABLE t (b int);
+CREATE TABLE t1 (b int);
+INSERT t VALUES (2);
+INSERT t1 VALUES (3);
+SELECT * FROM d.t;
+a
+1
+SELECT * FROM e.t;
+b
+2
+SELECT d.t.a, e.t.b FROM d.t, e.t;
+a	b
+1	2
+SELECT a, b FROM d.t, e.t;
+a	b
+1	2
+SELECT t.a, t1.b FROM d.t, e.t1;
+a	b
+1	3
+SELECT a, b FROM d.t, t1;
+a	b
+1	3
+DROP DATABASE d;
+DROP DATABASE e;
+USE test;

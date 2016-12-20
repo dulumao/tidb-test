@@ -1,0 +1,158 @@
+drop table if exists t1;
+drop table if exists t2;
+SET SQL_WARNINGS=1;
+
+create table t1 (a int not null auto_increment,b int, primary key (a)) engine=myisam auto_increment=3;
+insert into t1 values (1,1),(NULL,3),(NULL,4);
+delete from t1 where a=4;
+insert into t1 values (NULL,5),(NULL,6);
+select * from t1;
+delete from t1 where a=6;
+#show table status like "t1";
+replace t1 values (3,1);
+ALTER TABLE t1 add c int;
+replace t1 values (3,3,3);
+insert into t1 values (NULL,7,7);
+update t1 set a=8,b=b+1,c=c+1 where a=7;
+insert into t1 values (NULL,9,9);
+select * from t1;
+drop table t1;
+
+create table t1 (
+  skey tinyint unsigned NOT NULL auto_increment PRIMARY KEY,
+  sval char(20)
+);
+insert into t1 values (NULL, "hello");
+insert into t1 values (NULL, "hey");
+select * from t1;
+select skey,sval from t1;
+drop table t1;
+
+#
+# Test auto_increment on sub key
+#
+create table t1 (ordid int(8) not null auto_increment, ord  varchar(50) not null, primary key (ordid), index(ord,ordid)); 
+insert into t1 (ordid,ord) values (NULL,'sdj'),(NULL,'sdj');
+select * from t1;
+drop table t1;
+
+#
+# Test of auto_increment columns when they are set to 0
+#
+
+create table t1 (a int not null primary key auto_increment);
+insert into t1 values (0);
+update t1 set a=0;
+select * from t1;
+drop table t1;
+
+#
+# Test negative values (Bug #1366)
+#
+
+create table t1 (a int not null auto_increment primary key);
+insert into t1 values (NULL);
+insert into t1 values (-1);
+select last_insert_id();
+insert into t1 values (NULL);
+select * from t1;
+drop table t1;
+
+create table t1 (a int not null auto_increment primary key);
+insert into t1 values (NULL);
+insert into t1 values (-1);
+select last_insert_id();
+insert into t1 values (NULL);
+select * from t1;
+drop table t1;
+#
+# last_insert_id() madness
+#
+create table t1 (i tinyint unsigned not null auto_increment primary key);
+insert into t1 set i = 254;
+insert into t1 set i = null;
+select last_insert_id();
+--error ER_DUP_ENTRY
+insert into t1 set i = 254;
+select last_insert_id();
+--error ER_DUP_ENTRY
+insert into t1 set i = null;
+select last_insert_id();
+drop table t1;
+
+#
+# Bug #6880: LAST_INSERT_ID() within a statement
+#
+
+create table t1(a int not null auto_increment primary key);
+create table t2(a int not null auto_increment primary key, t1a int);
+insert into t1 values(NULL);
+insert into t2 values (NULL, LAST_INSERT_ID()), (NULL, LAST_INSERT_ID());
+insert into t1 values (NULL);
+insert into t2 values (NULL, LAST_INSERT_ID()), (NULL, LAST_INSERT_ID()),
+(NULL, LAST_INSERT_ID());
+insert into t1 values (NULL);
+insert into t2 values (NULL, LAST_INSERT_ID()), (NULL, LAST_INSERT_ID()),
+(NULL, LAST_INSERT_ID()), (NULL, LAST_INSERT_ID());
+select * from t2;
+drop table t1, t2;
+
+#
+# Test that update changes internal auto-increment value
+#
+
+create table t1 (a int not null auto_increment primary key, val int);
+insert into t1 (val) values (1);
+update t1 set a=2 where a=1;
+insert into t1 (val) values (1);
+select * from t1;
+drop table t1;
+
+
+# Test of REPLACE when it does INSERT+DELETE and not UPDATE:
+# see if it sets LAST_INSERT_ID() ok
+create table t1 (a int primary key auto_increment, b int, c int, d timestamp default current_timestamp, unique(b),unique(c));
+insert into t1 values(null,1,1,now());
+insert into t1 values(null,0,0,null);
+# this will delete two rows
+replace into t1 values(null,1,0,null);
+select last_insert_id();
+drop table t1;
+
+# Test of REPLACE when it does a INSERT+DELETE for all the conflicting rows
+# (i.e.) when there are three rows conflicting in unique key columns with
+# a row that is being inserted, all the three rows will be deleted and then
+# the new rows will be inserted.
+create table t1 (a int primary key auto_increment, b int, c int, e int, d timestamp default current_timestamp, unique(b),unique(c),unique(e));
+insert into t1 values(null,1,1,1,now());
+insert into t1 values(null,0,0,0,null);
+replace into t1 values(null,1,0,2,null);
+select last_insert_id();
+drop table t1;
+
+#
+# Bug#46616: Assertion `!table->auto_increment_field_not_null' on view   
+# manipulations
+#
+CREATE TABLE t1 ( a INT );
+INSERT INTO t1 VALUES (1), (1);
+
+CREATE TABLE t2 ( a INT AUTO_INCREMENT, PRIMARY KEY(a));
+--error ER_DUP_ENTRY
+INSERT INTO t2 SELECT a FROM t1;
+
+UPDATE t2 SET a = 2;
+
+SELECT a FROM t2;
+
+DROP TABLE t1, t2;
+
+--echo #
+--echo # Bug#50619 assert in handler::update_auto_increment
+--echo #
+
+CREATE TABLE t1 (pk INT AUTO_INCREMENT, PRIMARY KEY (pk));
+# This triggered the assert
+INSERT INTO t1 VALUES (NULL), (-1), (NULL);
+SELECT * FROM t1;
+DROP TABLE t1;

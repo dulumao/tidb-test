@@ -1,0 +1,28 @@
+drop table if exists t;
+create table t (id int);
+insert into t VALUES(1);
+PREPARE stmt1 FROM 'SELECT id+? AS id_plus from t';
+PREPARE stmt2 FROM 'SELECT id+?, id+? AS id_plus from t';
+PREPARE stmt3 FROM 'SELECT id+?, id+? AS id_plus;SELECT id+?, id+? AS id_plus';
+Error 1105: Can not prepare multiple statements
+SET @a=1;
+EXECUTE stmt1 USING @a;
+id_plus
+2
+EXECUTE stmt2 USING @a;
+Error 1105: Wrong parameter count
+EXECUTE stmt_not_exists USING @a;
+Error 1105: Prepared statement not found
+DEALLOCATE PREPARE stmt1;
+DROP PREPARE stmt1;
+Error 1105: Prepared statement not found
+EXECUTE stmt1 USING @a;
+Error 1105: Prepared statement not found
+PREPARE stmt4 FROM 'SELECT id+? AS id_plus from tablenoexists';
+Error 1146: Table 'test.tablenoexists' doesn't exist
+PREPARE stmt5 FROM 'SELECT id+? AS id_plus from t where id=?';
+insert into t VALUES(2);
+SET @b=2;
+EXECUTE stmt5 USING @a, @b;
+id_plus
+3
