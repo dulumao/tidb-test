@@ -169,7 +169,7 @@ hour("10:11:12")	minute("10:11:12")	second("10:11:12")	microsecond("10:11:12.123
 10	11	12	123456
 select dayofweek("2015-09-01"), weekday("2015-09-01"), yearweek("2015-09-01"), weekofyear("2015-09-01"), week("2015-09-01");
 dayofweek("2015-09-01")	weekday("2015-09-01")	yearweek("2015-09-01")	weekofyear("2015-09-01")	week("2015-09-01")
-3	1	201536	36	36
+3	1	201535	36	35
 SELECT 1, CONVERT(1, CHAR);
 1	CONVERT(1, CHAR)
 1	1

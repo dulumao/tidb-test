@@ -45,7 +45,7 @@ var (
 	pdAddr    = flag.String("pd", "localhost:52379", "pd address")
 	valueSize = flag.Int("V", 5, "value size in byte")
 
-	pushgatewayAddr = flag.String("P", "127.0.0.1:9091", "Pushgateway Address")
+	pushgatewayAddr = flag.String("P", "", "Pushgateway Address")
 
 	tidbVersion = os.Getenv("TIDB_VERSION")
 	tikvVersion = os.Getenv("TIKV_VERSION")
@@ -190,11 +190,13 @@ func main() {
 		batchRW(value)
 		elapseTime := time.Since(t).Seconds()
 		txnElapse.Set(elapseTime)
-		if err := push.AddCollectors("benchkv", nil, *pushgatewayAddr, txnCounter, txnRolledbackCounter, txnDurations, txnElapse); err != nil {
-			log.Fatal(err)
-		}
-
 		totalTime += elapseTime
+		if *pushgateway == "" {
+			continue
+		}
+		if err := push.AddCollectors("benchkv", nil, *pushgatewayAddr, txnCounter, txnRolledbackCounter, txnDurations, txnElapse); err != nil {
+			log.Error(err)
+		}
 	}
 
 	avgTime := totalTime / 3

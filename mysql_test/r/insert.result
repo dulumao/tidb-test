@@ -24,7 +24,7 @@ c1	c2
 10	1
 5	10
 insert into t values (default(c3), default);
-Error 1105: default column not found - c3
+Error 1054: Unknown column 'c3' in 'field_list'
 select * from t;
 c1	c2
 1	10

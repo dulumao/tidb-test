@@ -30,7 +30,7 @@ var (
 	dbname          = flag.String("D", "test", "set the default database name")
 	rownum          = flag.Int("R", 10000000, "the row num of table")
 	tablename       = flag.String("T", "benchcount", "the default table name")
-	pushgatewayAddr = flag.String("S", "127.0.0.1:9091", "Pushgateway Address")
+	pushgatewayAddr = flag.String("S", "", "Pushgateway Address")
 
 	tidbVersion = os.Getenv("TIDB_VERSION")
 	tikvVersion = os.Getenv("TIKV_VERSION")
@@ -133,6 +133,9 @@ func main() {
 		}
 		totalTime += end
 		countElapse.Set(end)
+		if *pushgatewayAddr == "" {
+			continue
+		}
 		if err := push.AddCollectors("benchcount", nil, *pushgatewayAddr, countElapse); err != nil {
 			log.Error(err)
 		}
