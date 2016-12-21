@@ -88,7 +88,7 @@ var (
 func Init() {
 	driver := tikv.Driver{}
 	var err error
-	store, err = driver.Open(fmt.Sprintf("tikv://%s", *pdAddr))
+	store, err = driver.Open(fmt.Sprintf("tikv://%s?disableGC=true", *pdAddr))
 	if err != nil {
 		log.Fatal(err)
 	}
