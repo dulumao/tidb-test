@@ -191,7 +191,7 @@ func main() {
 		elapseTime := time.Since(t).Seconds()
 		txnElapse.Set(elapseTime)
 		totalTime += elapseTime
-		if *pushgateway == "" {
+		if *pushgatewayAddr == "" {
 			continue
 		}
 		if err := push.AddCollectors("benchkv", nil, *pushgatewayAddr, txnCounter, txnRolledbackCounter, txnDurations, txnElapse); err != nil {
